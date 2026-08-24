@@ -11,7 +11,7 @@ Inspired by great [Browserosaurus](https://github.com/will-stone/browserosaurus)
 ```bash
 brew tap theeseuus/browserino https://github.com/theeseuus/Browserino
 brew trust --cask theeseuus/browserino/browserino
-brew install --cask theeseuus/browserino/browserino --no-quarantine
+brew install --cask theeseuus/browserino/browserino
 ```
 
 Or download Browserino from the [releases page](https://github.com/theeseuus/Browserino/releases).
