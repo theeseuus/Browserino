@@ -40,10 +40,13 @@ jobs:
           /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino.zip
 
           echo "artifact_path=dist/${FILENAME}.zip" >> "$GITHUB_OUTPUT"
+          echo "legacy_artifact_path=dist/Browserino.zip" >> "$GITHUB_OUTPUT"
 
       - name: Publish browserino release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.package.outputs.artifact_path }}
+          files: |
+            ${{ steps.package.outputs.artifact_path }}
+            ${{ steps.package.outputs.legacy_artifact_path }}
           generate_release_notes: true
           fail_on_unmatched_files: true
