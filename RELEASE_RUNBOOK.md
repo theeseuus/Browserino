@@ -5,6 +5,10 @@ This document has two workflows in fish shell syntax:
 1. Full release flow (normal version bump / repack)
 2. Hot-fix flow (release exists, only repair missing assets or wrong hash)
 
+Important:
+- `build/` and `dist/` are local artifacts and must **never** be committed.
+- Use cleanup commands after each release run and verify a clean working tree before commit.
+
 ## 1) Full release flow
 
 Use this when creating a new release or rebuilding artifacts from source.
@@ -128,3 +132,4 @@ rm -rf build dist
 git status --short
 ```
 
+If `git status --short` still shows `build/` or `dist/`, stop and clean them before committing anything.
