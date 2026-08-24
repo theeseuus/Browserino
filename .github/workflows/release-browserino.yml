@@ -1,0 +1,42 @@
+name: Release Browserino
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and publish release asset
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Browserino
+        run: |
+          xcodebuild -project Browserino.xcodeproj -scheme Browserino -configuration Release -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+
+      - name: Package release artifact
+        id: package
+        run: |
+          APP_PATH="$(find build -type d -name 'Browserino.app' | head -n 1)"
+          if [[ -z "$APP_PATH" ]]; then
+            echo "Error: Browserino.app not found in build output" >&2
+            exit 1
+          fi
+
+          mkdir -p dist
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino.zip
+
+          echo "artifact_path=dist/Browserino.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Publish browserino release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.package.outputs.artifact_path }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
