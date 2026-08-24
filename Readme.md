@@ -20,6 +20,8 @@ If you want to support the app, you can buy it on [Gumroad](https://alexstrnik.g
 
 # Release checklist (theeseuus fork)
 
+Local build/release artifacts (`build/`, `dist/`) are generated files and are **not** committed to git.
+
 Use this on a machine with `fish` shell and repo write access:
 
 1. `cd /Users/troymay/Documents/Programming/github-repos/browserino/Browserino`
