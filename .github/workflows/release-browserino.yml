@@ -29,10 +29,17 @@ jobs:
             exit 1
           fi
 
+          VERSION="${GITHUB_REF_NAME#v}"
+          if [[ -z "$VERSION" ]]; then
+            VERSION="${GITHUB_SHA::7}"
+          fi
+          FILENAME="Browserino-${VERSION}"
+
           mkdir -p dist
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/"${FILENAME}".zip
           /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino.zip
 
-          echo "artifact_path=dist/Browserino.zip" >> "$GITHUB_OUTPUT"
+          echo "artifact_path=dist/${FILENAME}.zip" >> "$GITHUB_OUTPUT"
 
       - name: Publish browserino release
         uses: softprops/action-gh-release@v2
