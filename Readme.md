@@ -9,10 +9,11 @@ Inspired by great [Browserosaurus](https://github.com/will-stone/browserosaurus)
 # Installation
 
 ```bash
-brew tap AlexStrNik/Browserino
-brew install browserino --no-quarantine
+brew tap theeseuus/browserino https://github.com/theeseuus/Browserino
+brew trust --cask theeseuus/browserino/browserino
+brew install --cask theeseuus/browserino/browserino --no-quarantine
 ```
 
-Or download Browserino from the [releases page](https://github.com/AlexStrNik/Browserino/releases).
+Or download Browserino from the [releases page](https://github.com/theeseuus/Browserino/releases).
 
 If you want to support the app, you can buy it on [Gumroad](https://alexstrnik.gumroad.com/l/browserino).
