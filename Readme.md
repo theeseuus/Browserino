@@ -1,16 +1,32 @@
 # Browserino
 
+Documentation version: 1.1
+
+Updated: 2026-10-28
+
 ![Browserino](images/browserino.png?v2)
 
-Browserino is a tiny browser selector for MacOS written in SwiftUI. Just set as default browser, assign shortcuts, and now you can choose in which application you want to open the link.
+Browserino is a tiny browser selector for macOS written in SwiftUI. Set it as your default browser, assign shortcuts, and choose which application should open each link.
 
-This is an independently maintained fork of [AlexStrNik/Browserino](https://github.com/AlexStrNik/Browserino). It remains available under the GNU GPL v3 licence and preserves the original project history and attribution.
+## About this fork
+
+This is a personal maintenance fork of [AlexStrNik/Browserino](https://github.com/AlexStrNik/Browserino), created to keep Browserino working for our own use after active upstream maintenance stopped.
+
+Compared with the original repository, this fork:
+
+- provides its own Homebrew tap and release artifacts;
+- keeps the cask and application compatible with current Homebrew and macOS changes; and
+- includes small practical fixes we need, such as optional removal of UTM tracking parameters before a URL is opened.
+
+The repository is public in case these fixes are useful to other Browserino users. It is not an official continuation of the original project or a supported product: maintenance follows our own needs, and no response time, compatibility promise, or user support is guaranteed. Useful issue reports and focused pull requests are still welcome.
+
+The fork remains available under the GNU GPL v3 licence and preserves the original project history and attribution.
 
 Inspired by great [Browserosaurus](https://github.com/will-stone/browserosaurus), but a little bit faster and smaller thanks to native code, and fixes annoying Electron bug.
 
 # Installation
 
-```bash
+```fish
 brew tap theeseuus/browserino https://github.com/theeseuus/Browserino
 brew trust --cask theeseuus/browserino/browserino
 brew install --cask theeseuus/browserino/browserino
@@ -18,7 +34,7 @@ brew install --cask theeseuus/browserino/browserino
 
 Or download Browserino from the [releases page](https://github.com/theeseuus/Browserino/releases).
 
-If you want to support the app, you can buy it on [Gumroad](https://alexstrnik.gumroad.com/l/browserino).
+To support Browserino's original author, you can buy the original app on [Gumroad](https://alexstrnik.gumroad.com/l/browserino).
 
 # Maintaining releases
 
