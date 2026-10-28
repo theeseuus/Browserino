@@ -68,18 +68,21 @@ class BrowserUtil {
         guard let bundle = Bundle(url: app) else {
             return
         }
+
+        let sanitizedUrls = urls.map { $0.removingTrackingParameters() }
         
         let configuration = NSWorkspace.OpenConfiguration()
         
         if isIncognito, let privateArg = privateArgs[bundle.bundleIdentifier!] {
             configuration.createsNewApplicationInstance = true
-            configuration.arguments = [privateArg] + urls.map(\.absoluteString)
+            configuration.arguments = [privateArg] + sanitizedUrls.map(\.absoluteString)
         }
         
         NSWorkspace.shared.open(
-            isIncognito ? [] : urls,
+            isIncognito ? [] : sanitizedUrls,
             withApplicationAt: app,
             configuration: configuration
         )
     }
+
 }
