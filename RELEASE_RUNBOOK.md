@@ -1,6 +1,6 @@
 # Browserino Release Runbook (theeseuus fork)
 
-Version: 1.3
+Version: 1.4
 Updated: 2026-10-28
 
 This document has two workflows in fish shell syntax:
@@ -24,7 +24,7 @@ git checkout main
 git pull --ff-only origin main
 rm -rf build dist
 
-set VERSION 1.1.18
+set VERSION 1.1.19
 xcodebuild -project Browserino.xcodeproj -scheme Browserino -configuration Release -destination 'generic/platform=macOS' -derivedDataPath build ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
 set APP_PATH (find build -type d -name 'Browserino.app' -print -quit)
 if test -z "$APP_PATH"
@@ -33,8 +33,8 @@ if test -z "$APP_PATH"
 end
 
 mkdir -p dist
-ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino-$VERSION.zip
 ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino.zip
+cp dist/Browserino.zip dist/Browserino-$VERSION.zip
 shasum -a 256 dist/Browserino.zip dist/Browserino-$VERSION.zip
 ```
 
@@ -63,7 +63,7 @@ end
 
 ```fish
 set REPO theeseuus/Browserino
-set VERSION 1.1.18
+set VERSION 1.1.19
 set URL "https://github.com/$REPO/releases/download/v$VERSION/Browserino.zip"
 curl -I $URL
 ```
@@ -92,7 +92,7 @@ cd /Users/troymay/Documents/Programming/github-repos/browserino/Browserino
 git checkout main
 git pull --ff-only origin main
 
-set VERSION 1.1.18
+set VERSION 1.1.19
 set REPO theeseuus/Browserino
 set TAG v$VERSION
 set FILE1 dist/Browserino.zip
@@ -128,7 +128,7 @@ end
 
 mkdir -p dist
 ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino.zip
-ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino-$VERSION.zip
+cp dist/Browserino.zip dist/Browserino-$VERSION.zip
 gh release upload $TAG dist/Browserino.zip dist/Browserino-$VERSION.zip --clobber --repo $REPO
 ```
 
