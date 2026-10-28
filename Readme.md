@@ -34,8 +34,6 @@ brew install --cask theeseuus/browserino/browserino
 
 Or download Browserino from the [releases page](https://github.com/theeseuus/Browserino/releases).
 
-To support Browserino's original author, you can buy the original app on [Gumroad](https://alexstrnik.gumroad.com/l/browserino).
-
 # Maintaining releases
 
 The Fish-compatible release procedure, including artifact cleanup and the hot-fix flow, is documented in [RELEASE_RUNBOOK.md](RELEASE_RUNBOOK.md). Local `build/` and `dist/` artifacts must not be committed.
