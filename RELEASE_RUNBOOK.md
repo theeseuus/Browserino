@@ -1,6 +1,6 @@
 # Browserino Release Runbook (theeseuus fork)
 
-Version: 1.2
+Version: 1.3
 Updated: 2026-10-28
 
 This document has two workflows in fish shell syntax:
@@ -46,7 +46,6 @@ Use the `Browserino.zip` checksum in `Casks/browserino.rb`. Confirm that the cas
 git add Browserino.xcodeproj/project.pbxproj Casks/browserino.rb
 git commit -m "Release Browserino $VERSION"
 git tag -a v$VERSION -m "Browserino $VERSION"
-git push origin main
 git push origin v$VERSION
 ```
 
@@ -70,6 +69,12 @@ curl -I $URL
 ```
 
 Expect `HTTP/2 200`.
+
+Only after the release URL returns `200`, publish the cask update:
+
+```fish
+git push origin main
+```
 
 ### Reinstall on machine(s)
 
