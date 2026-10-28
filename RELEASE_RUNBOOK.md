@@ -1,5 +1,8 @@
 # Browserino Release Runbook (theeseuus fork)
 
+Version: 1.2
+Updated: 2026-10-28
+
 This document has two workflows in fish shell syntax:
 
 1. Full release flow (normal version bump / repack)
@@ -7,6 +10,8 @@ This document has two workflows in fish shell syntax:
 
 Important:
 - `build/` and `dist/` are local artifacts and must **never** be committed.
+- The local Fish workflow is the canonical release path. The GitHub release workflow is manual-only so it cannot overwrite a checksummed release asset when a tag is pushed.
+- Never move or overwrite a published version tag during a normal release. If an artifact changes, publish a new patch version and checksum.
 - Use cleanup commands after each release run and verify a clean working tree before commit.
 
 ## 1) Full release flow
@@ -19,8 +24,8 @@ git checkout main
 git pull --ff-only origin main
 rm -rf build dist
 
-set VERSION 1.1.17
-xcodebuild -project Browserino.xcodeproj -scheme Browserino -configuration Release -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+set VERSION 1.1.18
+xcodebuild -project Browserino.xcodeproj -scheme Browserino -configuration Release -destination 'generic/platform=macOS' -derivedDataPath build ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
 set APP_PATH (find build -type d -name 'Browserino.app' -print -quit)
 if test -z "$APP_PATH"
   echo "Browserino.app not found"
@@ -30,13 +35,19 @@ end
 mkdir -p dist
 ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino-$VERSION.zip
 ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Browserino.zip
+shasum -a 256 dist/Browserino.zip dist/Browserino-$VERSION.zip
 ```
 
-### Update tag and push
+Use the `Browserino.zip` checksum in `Casks/browserino.rb`. Confirm that the cask version and both Xcode `MARKETING_VERSION` values match `$VERSION`.
+
+### Commit, tag, and push
 
 ```fish
-git tag -fa v$VERSION (git rev-parse HEAD) -m "Browserino $VERSION"
-git push --force origin refs/tags/v$VERSION
+git add Browserino.xcodeproj/project.pbxproj Casks/browserino.rb
+git commit -m "Release Browserino $VERSION"
+git tag -a v$VERSION -m "Browserino $VERSION"
+git push origin main
+git push origin v$VERSION
 ```
 
 ### Create or repair release assets
@@ -53,7 +64,7 @@ end
 
 ```fish
 set REPO theeseuus/Browserino
-set VERSION 1.1.17
+set VERSION 1.1.18
 set URL "https://github.com/$REPO/releases/download/v$VERSION/Browserino.zip"
 curl -I $URL
 ```
@@ -69,14 +80,14 @@ brew reinstall --cask theeseuus/browserino/browserino
 
 ## 2) Hot-fix flow
 
-Use this when a release exists but cask install fails with 404 because assets are missing/incorrect.
+Use this only when a release exists but an original, unchanged asset is missing. If rebuilding produces a different checksum, stop and create a new patch release instead of replacing the published artifact.
 
 ```fish
 cd /Users/troymay/Documents/Programming/github-repos/browserino/Browserino
 git checkout main
 git pull --ff-only origin main
 
-set VERSION 1.1.17
+set VERSION 1.1.18
 set REPO theeseuus/Browserino
 set TAG v$VERSION
 set FILE1 dist/Browserino.zip
@@ -103,7 +114,7 @@ end
 
 ```fish
 rm -rf build dist
-xcodebuild -project Browserino.xcodeproj -scheme Browserino -configuration Release -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+xcodebuild -project Browserino.xcodeproj -scheme Browserino -configuration Release -destination 'generic/platform=macOS' -derivedDataPath build ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
 set APP_PATH (find build -type d -name 'Browserino.app' -print -quit)
 if test -z "$APP_PATH"
   echo "Browserino.app not found"
