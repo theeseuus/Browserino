@@ -65,10 +65,11 @@ end
 set REPO theeseuus/Browserino
 set VERSION 1.1.19
 set URL "https://github.com/$REPO/releases/download/v$VERSION/Browserino.zip"
-curl -I $URL
+curl -LfsS -o /dev/null -w '%{http_code}\n' $URL
+curl -LfsS $URL | shasum -a 256
 ```
 
-Expect `HTTP/2 200`.
+Expect status `200` and the checksum recorded in `Casks/browserino.rb`.
 
 Only after the release URL returns `200`, publish the cask update:
 
@@ -136,7 +137,8 @@ gh release upload $TAG dist/Browserino.zip dist/Browserino-$VERSION.zip --clobbe
 
 ```fish
 set URL "https://github.com/$REPO/releases/download/$TAG/Browserino.zip"
-curl -I $URL
+curl -LfsS -o /dev/null -w '%{http_code}\n' $URL
+curl -LfsS $URL | shasum -a 256
 brew update
 brew reinstall --cask theeseuus/browserino/browserino
 ```
