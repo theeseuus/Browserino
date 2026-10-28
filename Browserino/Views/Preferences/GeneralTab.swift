@@ -43,6 +43,7 @@ struct GeneralTab: View {
     @AppStorage("copy_alternativeShortcut") private var alternativeShortcut: Bool = false
     @AppStorage("showInMenuBar") private var showInMenuBar: Bool = true
     @AppStorage("apps_atTop") private var appsAtTop: Bool = true
+    @AppStorage("stripTrackingParameters") private var stripTrackingParameters: Bool = true
     
     func defaultBrowser() -> String? {
         guard let browserUrl = NSWorkspace.shared.urlForApplication(toOpen: URL(string: "https:")!) else {
@@ -186,6 +187,24 @@ struct GeneralTab: View {
                             .font(.callout)
                             .opacity(0.5)
                     }
+                }
+            }
+
+            HStack(alignment: .top, spacing: 32) {
+                Text("Privacy")
+                    .font(.headline)
+                    .frame(width: 200, alignment: .trailing)
+
+                VStack(alignment: .leading) {
+                    Toggle(isOn: $stripTrackingParameters) {
+                        Text("Strip UTM tracking parameters before opening URLs")
+                            .font(.callout)
+                            .opacity(0.5)
+                    }
+
+                    Text("Redirect services may add tracking parameters after Browserino hands off a URL.")
+                        .font(.callout)
+                        .opacity(0.5)
                 }
             }
             

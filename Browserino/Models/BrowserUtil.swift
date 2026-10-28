@@ -11,6 +11,7 @@ import SwiftUI
 class BrowserUtil {
     @AppStorage("directories") private static var directories: [Directory] = []
     @AppStorage("privateArgs") private static var privateArgs: [String: String] = [:]
+    @AppStorage("stripTrackingParameters") private static var stripTrackingParameters: Bool = true
 
     static func loadBrowsers(
         oldBrowsers: [URL]
@@ -69,7 +70,9 @@ class BrowserUtil {
             return
         }
 
-        let sanitizedUrls = urls.map { $0.removingTrackingParameters() }
+        let sanitizedUrls = stripTrackingParameters
+            ? urls.map { $0.removingTrackingParameters() }
+            : urls
         
         let configuration = NSWorkspace.OpenConfiguration()
         
